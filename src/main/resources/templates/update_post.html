@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"><head>
+    <meta charset="UTF-8">
+    <title th:text="${post.title}"></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h2>Update BLog</h2>
+
+    <form action="#" th:action="@{/updatePost}" th:object="${post}" method="POST">
+
+        <!-- Add hidden form field to handle update -->
+        <input type="hidden" th:field="*{pid}" />
+
+        <input type="text" th:field="*{title}" placeholder="Title" class="form-control mb cp-4">
+        <input type="text" th:field="*{excerpt}" placeholder="Excerpt" class="form-control mb cp-4">
+        <textarea type="text" rows="10" th:field="*{content}" placeholder="Content" class="form-control mb cp-4"></textarea>
+        <input type="text" th:field="*{author}" placeholder="Author" class="form-control">
+
+        <button type="submit" class="btn btn-info col-2"> Update </button>
+
+    </form>
+
+    <hr>
+
+    <a th:href="@{/home}"> Back to Home Page</a>
+</div>
+</body>
+</html>

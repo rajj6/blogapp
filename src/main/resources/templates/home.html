@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+    <title>Home</title>
+</head>
+<body>
+    <div class="container my-2">
+        <h1>Post List</h1>
+        <a th:href="@{/showNewBlogForm}" class="btn btn-primary btn-sm mb-3"> Create Blog </a>
+        <table border="1" class="table table-striped table-responsive-md">
+            <thead>
+            <tr>
+                <th>Post</th>
+                <th> Actions </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="post : ${posts}">
+                <td>
+                    <b class="bold" th:text="${post.title}"></b>
+                    <p th:text="${post.excerpt}"></p>
+                </td>
+                <td>
+                    <a th:href="@{/showPost/{id}(id=${post.pid})}" class="btn btn-primary">Show</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+<!--
+<div class="container" th:each="post : ${posts}">
+        <div class="post">
+            <div class="title" th:text="${post.title}"></div>
+            <div th:text="${post.excerpt}">/</div>
+            <a th:></a>
+            <div th:text="${post.author.name}" ></div>
+        </div>
+    </div>
+</body>
+-->
