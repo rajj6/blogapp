@@ -82,7 +82,6 @@ public class PostServiceImpl implements PostService{
             tagsString += tag.toUpperCase().trim()+" ";
         }
         post.setTagsString(tagsString);
-        publishPost(post);
     }
 
     @Override
@@ -91,9 +90,11 @@ public class PostServiceImpl implements PostService{
         for (Tag tag : post.getTags()) {
             tagsString += tag.getName() + " ";
         }
-        System.out.println("\n*\n*\n*\n*\n*\n*");
-        System.out.println(post.getTags());
-        System.out.println(tagsString);
         post.setTagsString(tagsString);
+    }
+
+    @Override
+    public void removeAllTagsFromPost(Post post) {
+        post.setTags(new ArrayList<Tag>());
     }
 }

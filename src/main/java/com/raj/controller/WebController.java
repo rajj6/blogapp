@@ -6,6 +6,7 @@ import com.raj.repository.PostRepository;
 import com.raj.repository.TagRepository;
 import com.raj.repository.UserRepository;
 import com.raj.service.PostService;
+import com.raj.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,8 @@ public class WebController {
     @Autowired
     PostService postService;
 
+    @Autowired
+    TagService tagService;
     @Autowired
     PostRepository postRepository;
 
@@ -74,6 +77,8 @@ public class WebController {
 
     @PostMapping("/updatePost")
     public String updatePost(@ModelAttribute("post") Post post) {
+        postService.removeAllTagsFromPost(post);
+        postService.addTagsToPost(post);
         postService.updatePost(post);
         return "redirect:/home";
     }
@@ -81,12 +86,15 @@ public class WebController {
     @PostMapping("/publishPost")
     public String publishPost(@ModelAttribute("post") Post post) {
         postService.addTagsToPost(post);
+        postService.publishPost(post);
         return "redirect:/home";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
         Post post = postService.getPostById(id);
+        System.out.println(post);
+        System.out.println(post.getTags());
         postService.generateTagsString(post);
         model.addAttribute("post", post);
         return "update_post";

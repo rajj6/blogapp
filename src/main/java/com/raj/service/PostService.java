@@ -5,9 +5,9 @@ import com.raj.model.Post;
 import java.util.List;
 
 public interface PostService {
-    List<com.raj.model.Post> getAllPost();
+    List<Post> getAllPost();
 
-    void savePost(com.raj.model.Post post);
+    void savePost(Post post);
 
     void updatePost(com.raj.model.Post post);
 
@@ -20,4 +20,6 @@ public interface PostService {
     void addTagsToPost(com.raj.model.Post post);
 
     void generateTagsString(com.raj.model.Post post);
+
+    void removeAllTagsFromPost(Post post);
 }
