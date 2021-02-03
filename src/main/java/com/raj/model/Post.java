@@ -3,8 +3,10 @@ package com.raj.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 
 @Entity
@@ -34,6 +36,9 @@ public class Post implements Serializable {
     )
     private String content;
 
+    @Transient
+    private String tagsString;
+
     @ManyToOne
     private User author;
 
@@ -42,13 +47,6 @@ public class Post implements Serializable {
 
     @ManyToMany
     private Collection<Tag> tags = new ArrayList<>();
-    public Collection<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Collection<Comment> comments) {
-        this.comments = comments;
-    }
 
     @Column(name="published_at")
     private Timestamp publishedAt;
@@ -78,7 +76,6 @@ public class Post implements Serializable {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
 
     public long getPid() {
         return pid;
@@ -124,6 +121,22 @@ public class Post implements Serializable {
         return publishedAt;
     }
 
+    public String getTagsString() {
+        return tagsString;
+    }
+
+    public void setTagsString(String tagsString) {
+        this.tagsString = tagsString;
+    }
+
+    public Collection<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Collection<Tag> tags) {
+        this.tags = tags;
+    }
+
     public void setPublishedAt(Timestamp publishedAt) {
         this.publishedAt = publishedAt;
     }
@@ -158,6 +171,14 @@ public class Post implements Serializable {
 
     public void setUpdatedAt(Timestamp updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Collection<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Collection<Comment> comments) {
+        this.comments = comments;
     }
 
     public void setUpdatedAt(long updatedAt) {

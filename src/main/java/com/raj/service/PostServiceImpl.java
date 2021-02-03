@@ -1,19 +1,30 @@
 package com.raj.service;
 
 import com.raj.model.Post;
+import com.raj.model.Tag;
 import com.raj.repository.PostRepository;
+import com.raj.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class PostServiceImpl implements PostService{
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
+    private TagService tagService;
 
     @Override
     public List<Post> getAllPost() {
@@ -57,5 +68,32 @@ public class PostServiceImpl implements PostService{
     @Override
     public void deletePostById(long id) {
         postRepository.deleteById(id);
+    }
+
+    @Override
+    public void addTagsToPost(Post post) {
+        Collection<Tag> tagsList = post.getTags();
+        String tagsString = "";
+        for(String tag : post.getTagsString().split(" ")) {
+            if(tagRepository.findTagByName(tag.toUpperCase().trim()) == null) {
+                tagService.saveTag(new Tag(tag.toUpperCase().trim()));
+            }
+            tagsList.add(tagRepository.findTagByName(tag.toUpperCase().trim()));
+            tagsString += tag.toUpperCase().trim()+" ";
+        }
+        post.setTagsString(tagsString);
+        publishPost(post);
+    }
+
+    @Override
+    public void generateTagsString(Post post) {
+        String tagsString = "";
+        for (Tag tag : post.getTags()) {
+            tagsString += tag.getName() + " ";
+        }
+        System.out.println("\n*\n*\n*\n*\n*\n*");
+        System.out.println(post.getTags());
+        System.out.println(tagsString);
+        post.setTagsString(tagsString);
     }
 }

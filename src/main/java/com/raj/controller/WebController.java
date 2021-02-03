@@ -3,6 +3,7 @@ package com.raj.controller;
 import com.raj.model.Post;
 import com.raj.model.Tag;
 import com.raj.repository.PostRepository;
+import com.raj.repository.TagRepository;
 import com.raj.repository.UserRepository;
 import com.raj.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.ZonedDateTime;
+import java.util.Locale;
 
 @Controller
 public class WebController {
@@ -26,6 +28,23 @@ public class WebController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    TagRepository tagRepository;
+
+    @GetMapping("/test")
+    public String test(){
+//        System.out.println(tagRepository.findTagByName("Love"));
+        String test = "Love Raj HAte SIngh";
+        String s="";
+        for (String t : test.split(" ")) {
+            System.out.println(t);
+            System.out.println(t.trim().toUpperCase());
+            s += t.trim().toUpperCase()+" ";
+        }
+        System.out.println(s);
+        return "test";
+    }
 
     @GetMapping("/home")
     public String showPosts(Model model) {
@@ -61,13 +80,14 @@ public class WebController {
 
     @PostMapping("/publishPost")
     public String publishPost(@ModelAttribute("post") Post post) {
-        postService.publishPost(post);
+        postService.addTagsToPost(post);
         return "redirect:/home";
     }
 
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
         Post post = postService.getPostById(id);
+        postService.generateTagsString(post);
         model.addAttribute("post", post);
         return "update_post";
     }

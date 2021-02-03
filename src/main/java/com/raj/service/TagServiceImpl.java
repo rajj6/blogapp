@@ -3,11 +3,13 @@ package com.raj.service;
 import com.raj.model.Tag;
 import com.raj.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+@Service
 public class TagServiceImpl implements TagService{
 
     @Autowired

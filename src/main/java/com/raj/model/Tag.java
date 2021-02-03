@@ -2,6 +2,7 @@ package com.raj.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -83,5 +84,17 @@ public class Tag {
         return "Tag{" +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    public Tag(String name, Timestamp createdAt, Timestamp updatedAt) {
+        this.name = name;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Tag(String name) {
+        this.name = name;
+        createdAt = new Timestamp(ZonedDateTime.now().toInstant().toEpochMilli());
+        updatedAt = new Timestamp(ZonedDateTime.now().toInstant().toEpochMilli());
     }
 }
