@@ -1,6 +1,7 @@
 package com.raj.service;
 
 import com.raj.model.Post;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -9,17 +10,19 @@ public interface PostService {
 
     void savePost(Post post);
 
-    void updatePost(com.raj.model.Post post);
+    void updatePost(Post post);
 
-    void publishPost(com.raj.model.Post post);
+    void publishPost(Post post);
 
-    com.raj.model.Post getPostById(long id);
+    Post getPostById(long id);
 
     void deletePostById(long id);
 
-    void addTagsToPost(com.raj.model.Post post);
+    void addTagsToPost(Post post);
 
-    void generateTagsString(com.raj.model.Post post);
+    void generateTagsString(Post post);
 
     void removeAllTagsFromPost(Post post);
+
+    Page<Post> findPaginated(int pageNo, int pageSize);
 }
