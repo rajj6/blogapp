@@ -145,11 +145,14 @@ public class Post implements Serializable {
         this.publishedAt.setTime(publishedAt);
     }
 
-    public boolean isPublished() {
+    public void setPublishedAt(String publishedAt) {
+        this.publishedAt = Timestamp.valueOf(publishedAt);
+    }
+    public boolean getIsPublished() {
         return isPublished;
     }
 
-    public void setPublished(boolean published) {
+    public void setIsPublished(boolean published) {
         isPublished = published;
     }
 
@@ -163,6 +166,10 @@ public class Post implements Serializable {
 
     public void setCreatedAt(long createdAt) {
         this.createdAt.setTime(createdAt);
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = Timestamp.valueOf(createdAt);
     }
 
     public Timestamp getUpdatedAt() {
