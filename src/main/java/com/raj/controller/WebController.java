@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -39,23 +36,44 @@ public class WebController {
     TagRepository tagRepository;
 
     @GetMapping("/")
-    public String test(Model model) {
-        return showPosts(1,model);
+    public String main(Model model) {
+//        return showPosts(1,model);
+//        return testPosts(1, model);
+        return showPosts(1,"publishedAt","asc",model);
     }
 
     @GetMapping("/home/{pageNo}")
-    public String showPosts(@PathVariable(value = "pageNo") int pageNo, Model model){
+    public String showPosts(@PathVariable(value = "pageNo") int pageNo,
+                            @RequestParam("sortField") String sortField,
+                            @RequestParam("order") String order, Model model){
         int pageSize = 3;
 
-        Page<Post> page = postService.findPaginated(pageNo, pageSize);
+        Page<Post> page = postService.findPaginated(pageNo, pageSize, sortField, order);
         List<Post> posts= page.getContent();
 
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
+        model.addAttribute("sortDir", order);
+        model.addAttribute("sortField", sortField);
         model.addAttribute("posts", posts);
+        System.out.println("Here");
         return "home";
     }
+
+//    @GetMapping("/home/{pageNo}")
+//    public String showPosts(@PathVariable(value = "pageNo") int pageNo, Model model){
+//        int pageSize = 3;
+//
+//        Page<Post> page = postService.findPaginated(pageNo, pageSize);
+//        List<Post> posts= page.getContent();
+//
+//        model.addAttribute("currentPage", pageNo);
+//        model.addAttribute("totalPages", page.getTotalPages());
+//        model.addAttribute("totalItems", page.getTotalElements());
+//        model.addAttribute("posts", posts);
+//        return "home";
+//    }
 
 //    @GetMapping("/home")
 //    public String showPosts(Model model) {

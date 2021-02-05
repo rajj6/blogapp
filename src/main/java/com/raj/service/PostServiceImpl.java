@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -104,6 +105,16 @@ public class PostServiceImpl implements PostService{
     @Override
     public Page<Post> findPaginated(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+        return postRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Post> findPaginated(int pageNo, int pageSize, String sortField, String order) {
+        // Sort in ascending or descending order Published DataTime
+        Sort sort = order.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         return postRepository.findAll(pageable);
     }
 }

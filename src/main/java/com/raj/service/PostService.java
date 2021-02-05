@@ -25,4 +25,6 @@ public interface PostService {
     void removeAllTagsFromPost(Post post);
 
     Page<Post> findPaginated(int pageNo, int pageSize);
+
+    Page<Post> findPaginated(int pageNo, int pageSize, String sortField, String order);
 }
