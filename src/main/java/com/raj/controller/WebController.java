@@ -37,8 +37,6 @@ public class WebController {
 
     @GetMapping("/")
     public String main(Model model) {
-//        return showPosts(1,model);
-//        return testPosts(1, model);
         return showPosts(1,"publishedAt","asc",model);
     }
 
@@ -54,32 +52,13 @@ public class WebController {
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("totalItems", page.getTotalElements());
+
         model.addAttribute("sortDir", order);
         model.addAttribute("sortField", sortField);
         model.addAttribute("posts", posts);
         System.out.println("Here");
         return "home";
     }
-
-//    @GetMapping("/home/{pageNo}")
-//    public String showPosts(@PathVariable(value = "pageNo") int pageNo, Model model){
-//        int pageSize = 3;
-//
-//        Page<Post> page = postService.findPaginated(pageNo, pageSize);
-//        List<Post> posts= page.getContent();
-//
-//        model.addAttribute("currentPage", pageNo);
-//        model.addAttribute("totalPages", page.getTotalPages());
-//        model.addAttribute("totalItems", page.getTotalElements());
-//        model.addAttribute("posts", posts);
-//        return "home";
-//    }
-
-//    @GetMapping("/home")
-//    public String showPosts(Model model) {
-//        model.addAttribute("posts", postService.getAllPost());
-//        return "home";
-//    }
 
     @GetMapping("/showPost/{id}")
     public String showPost(@PathVariable(value = "id") long id, Model model) {
@@ -119,8 +98,6 @@ public class WebController {
     @GetMapping("/showFormForUpdate/{id}")
     public String showFormForUpdate(@PathVariable(value = "id") long id, Model model) {
         Post post = postService.getPostById(id);
-        System.out.println(post);
-        System.out.println(post.getTags());
         postService.generateTagsString(post);
         model.addAttribute("post", post);
         return "update_post";

@@ -46,7 +46,8 @@ public class PostServiceImpl implements PostService{
         if(post.getCreatedAt() == null) {
             post.setCreatedAt(new Timestamp(ZonedDateTime.now().toInstant().toEpochMilli()));
         }
-        System.out.println("Is side PostServiceImpl update Post");
+        post.setPublishedAt(new Timestamp(ZonedDateTime.now().toInstant().toEpochMilli()));
+        post.setPublished(true);
         post.setUpdatedAt(new Timestamp(ZonedDateTime.now().toInstant().toEpochMilli()));
         postRepository.save(post);
     }

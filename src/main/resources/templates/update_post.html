@@ -10,13 +10,14 @@
 
     <form action="#" th:action="@{/updatePost}" th:object="${post}" method="POST">
 
-        <!-- Add hidden form field to handle update -->
         <input type="hidden" th:field="*{pid}" />
+        <input type="hidden" th:field="*{author}" />
+<!--        <input type="hidden" th:field="*{publishedAt}" />-->
+<!--        <input type="hidden" th:field="*{createdAt}" />-->
 
         <input type="text" th:field="*{title}" placeholder="Title" class="form-control mb cp-4">
         <input type="text" th:field="*{excerpt}" placeholder="Excerpt" class="form-control mb cp-4">
         <textarea type="text" rows="10" th:field="*{content}" placeholder="Content" class="form-control mb cp-4"></textarea>
-        <input type="text" th:field="*{author}" placeholder="Author" class="form-control">
         <input type="text" th:field="*{tagsString}" placeholder="Tags" class="form-control mb cp-4">
 
         <button type="submit" class="btn btn-info col-2"> Update </button>
