@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Locale;
 
 @Controller
 public class WebController {
@@ -42,8 +41,8 @@ public class WebController {
 
     @GetMapping("/home/{pageNo}")
     public String showPosts(@PathVariable(value = "pageNo") int pageNo,
-                            @RequestParam("sortField") String sortField,
-                            @RequestParam("order") String order, Model model){
+                            @RequestParam(value = "sortField", required = false) String sortField,
+                            @RequestParam(value = "order", required = false) String order, Model model){
         int pageSize = 3;
 
         Page<Post> page = postService.findPaginated(pageNo, pageSize, sortField, order);
