@@ -38,6 +38,7 @@
                 <td>
                     <b class="bold" th:text="${post.title}"></b>
                     <p th:text="${post.excerpt}"></p>
+                    <b th:text="${post.publishedAt}"></b>
                 </td>
                 <td>
                     <a th:href="@{/showPost/{id}(id=${post.pid})}" class="btn btn-primary">Show</a>

@@ -1,19 +1,22 @@
 package com.raj.controller;
 
+import com.raj.model.Comment;
 import com.raj.model.Post;
 import com.raj.model.Tag;
 import com.raj.repository.PostRepository;
 import com.raj.repository.TagRepository;
 import com.raj.repository.UserRepository;
+import com.raj.service.CommentService;
 import com.raj.service.PostService;
 import com.raj.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Controller
@@ -29,10 +32,15 @@ public class WebController {
     PostRepository postRepository;
 
     @Autowired
-    UserRepository userRepository;
+    CommentService commentService;
 
-    @Autowired
-    TagRepository tagRepository;
+
+    @GetMapping("/test")
+    public String test() {
+        Pageable pageable = PageRequest.of(0, 10);
+        System.out.println(postRepository.search("Raj", pageable));
+        return "test";
+    }
 
     @GetMapping("/")
     public String main(Model model) {
@@ -61,7 +69,9 @@ public class WebController {
 
     @GetMapping("/showPost/{id}")
     public String showPost(@PathVariable(value = "id") long id, Model model) {
-        model.addAttribute("post", postService.getPostById(id));
+        Post post = postService.getPostById(id);
+        postService.generateTagsString(post);
+        model.addAttribute("post", post);
         return "show_post";
     }
 
@@ -74,7 +84,6 @@ public class WebController {
 
     @PostMapping("/savePost")
     public String savePost(@ModelAttribute("post") Post post) {
-        post.setCreatedAt(ZonedDateTime.now().toInstant().toEpochMilli());
         postService.savePost(post);
         return "redirect:/home";
     }
@@ -106,6 +115,47 @@ public class WebController {
     public String deletePost(@PathVariable(value = "id") long id) {
         this.postService.deletePostById(id);
         return "redirect:/";
+    }
+
+    @GetMapping("/addComment/{id}")
+    public String addComment(@PathVariable(value = "id") long id, Model model) {
+        Comment comment = new Comment();
+        model.addAttribute("comment", comment);
+        model.addAttribute("postId", id);
+        return "comment_form";
+    }
+
+    @PostMapping("/saveComment/{id}")
+    public String saveComment(@PathVariable(value = "id") long id,
+                              @ModelAttribute("comment") Comment comment,
+                              Model model) {
+        commentService.addCommentToPost(postService.getPostById(id), comment);
+        commentService.saveComment(comment);
+        return "redirect:/showPost/" + id;
+    }
+
+    @PostMapping("/updateComment")
+    public String updateComment(@ModelAttribute("comment") Comment comment, Model model,
+                                @ModelAttribute("postId") long postId) {
+        commentService.addCommentToPost(postService.getPostById(postId),comment);
+        commentService.updateComment(comment);
+        return "redirect:/";
+    }
+
+    @GetMapping("/deleteComment/{id}")
+    public String deleteComment(@PathVariable(value = "id") long id) {
+        commentService.deleteCommentById(id);
+        return "redirect:/";
+    }
+
+    @GetMapping("/showCommentUpdateForm/{id}")
+    public String deleteComment(@PathVariable(value = "id") long id, Model model) {
+        Comment comment = commentService.getCommentById(id);
+        System.out.println(comment.getCid() + " " + comment.getCreatedAt() + " " +comment.getName() + " " + comment.getEmail() +  " " + comment.getCommentMsg());
+        model.addAttribute("comment", commentService.getCommentById(id));
+        model.addAttribute("postId", comment.getPostId().getPid());
+        System.out.println("postId id " + comment.getPostId().getPid());
+        return "comment_update_form";
     }
 
     @GetMapping("/addTag")

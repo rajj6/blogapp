@@ -1,5 +1,6 @@
 package com.raj.service;
 
+import com.raj.model.Comment;
 import com.raj.model.Post;
 import org.springframework.data.domain.Page;
 
@@ -27,4 +28,6 @@ public interface PostService {
     Page<Post> findPaginated(int pageNo, int pageSize);
 
     Page<Post> findPaginated(int pageNo, int pageSize, String sortField, String order);
+
+//    void addCommentToPost(Post post, Comment comment);
 }

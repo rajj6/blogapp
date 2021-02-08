@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Comment</title>
+</head>
+<link rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous">
+<body>
+<div class="container">
+    <h2>Add Comment</h2>
+
+    <form action="#" th:action="@{/saveComment/{id}(id=${postId})}" th:object="${comment}" method="post">
+
+        <input type="text" th:field="*{name}" placeholder="Name" class="form-control mb cp-4">
+        <input type="text" th:field="*{email}" placeholder="Email" class="form-control mb cp-4">
+        <textarea type="text" rows="3" th:field="*{commentMsg}" placeholder="Add comment here.." class="form-control mb cp-4"></textarea>
+        <button type="submit" class="btn btn-info col-2"> Comment </button>
+    </form>
+
+    <hr>
+
+    <a th:href = "@{/}"> Back to Home Page</a>
+</div>
+</body>
+</html>

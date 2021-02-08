@@ -1,5 +1,6 @@
 package com.raj.service;
 
+import com.raj.model.Comment;
 import com.raj.model.Post;
 import com.raj.model.Tag;
 import com.raj.repository.PostRepository;
@@ -87,6 +88,13 @@ public class PostServiceImpl implements PostService{
         post.setTagsString(tagsString);
     }
 
+//    @Override
+//    public void addCommentToPost(Post post, Comment comment) {
+//        comment.setCreatedAt(new Timestamp(ZonedDateTime.now().toInstant().toEpochMilli()));
+//        comment.setUpdatedAt(new Timestamp(ZonedDateTime.now().toInstant().toEpochMilli()));
+//        post.getComments().add(comment);
+//    }
+
     @Override
     public void generateTagsString(Post post) {
         String tagsString = "";
@@ -116,4 +124,15 @@ public class PostServiceImpl implements PostService{
         Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
         return postRepository.findAll(pageable);
     }
+
+
+    public Page<Post> findPaginated(int pageNo, int pageSize, String sortField, String order, String keyword) {
+        // Sort in ascending or descending order Published DataTime
+        Sort sort = order.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+
+        Pageable pageable = PageRequest.of(pageNo - 1, pageSize, sort);
+        return postRepository.findAll(pageable);
+    }
+
 }

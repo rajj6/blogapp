@@ -27,10 +27,10 @@ public class Comment {
             name = "comment",
             nullable = false
     )
-    private String comment;
+    private String commentMsg;
 
     @ManyToOne
-    private Post post_id;
+    private Post postId;
 
     @Column(
             name = "created_at",
@@ -65,20 +65,20 @@ public class Comment {
         this.email = email;
     }
 
-    public String getComment() {
-        return comment;
+    public String getCommentMsg() {
+        return commentMsg;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setCommentMsg(String commentMsg) {
+        this.commentMsg = commentMsg;
     }
 
-    public Post getPost_id() {
-        return post_id;
+    public Post getPostId() {
+        return postId;
     }
 
-    public void setPost_id(Post post_id) {
-        this.post_id = post_id;
+    public void setPostId(Post postId) {
+        this.postId = postId;
     }
 
     public Timestamp getCreatedAt() {
@@ -87,6 +87,10 @@ public class Comment {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = Timestamp.valueOf(createdAt);
     }
 
     public Timestamp getUpdatedAt() {
@@ -103,8 +107,8 @@ public class Comment {
                 "cid=" + cid +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", comment='" + comment + '\'' +
-                ", post_id=" + post_id.getPid() +
+                ", comment='" + commentMsg + '\'' +
+                ", post_id=" + postId.getPid() +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
@@ -113,8 +117,8 @@ public class Comment {
     public Comment(String name, String email, String comment, Post post_id, Timestamp createdAt, Timestamp updatedAt) {
         this.name = name;
         this.email = email;
-        this.comment = comment;
-        this.post_id = post_id;
+        this.commentMsg = comment;
+        this.postId = post_id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }

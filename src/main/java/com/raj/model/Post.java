@@ -42,7 +42,7 @@ public class Post implements Serializable {
     @ManyToOne
     private User author;
 
-    @OneToMany(mappedBy = "post_id")
+    @OneToMany(mappedBy = "postId")
     private Collection<Comment> comments = new ArrayList<>();
 
     @ManyToMany
