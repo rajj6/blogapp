@@ -4,8 +4,6 @@ import com.raj.model.Comment;
 import com.raj.model.Post;
 import com.raj.model.Tag;
 import com.raj.repository.PostRepository;
-import com.raj.repository.TagRepository;
-import com.raj.repository.UserRepository;
 import com.raj.service.CommentService;
 import com.raj.service.PostService;
 import com.raj.service.TagService;
@@ -63,7 +61,6 @@ public class WebController {
         model.addAttribute("sortDir", order);
         model.addAttribute("sortField", sortField);
         model.addAttribute("posts", posts);
-        System.out.println("Here");
         return "home";
     }
 
@@ -139,22 +136,21 @@ public class WebController {
                                 @ModelAttribute("postId") long postId) {
         commentService.addCommentToPost(postService.getPostById(postId),comment);
         commentService.updateComment(comment);
-        return "redirect:/";
+        return "redirect:/showPost/" + postId;
     }
 
     @GetMapping("/deleteComment/{id}")
     public String deleteComment(@PathVariable(value = "id") long id) {
+        long postId = commentService.getCommentById(id).getPostId().getPid();
         commentService.deleteCommentById(id);
-        return "redirect:/";
+        return "redirect:/showPost/" + postId;
     }
 
     @GetMapping("/showCommentUpdateForm/{id}")
     public String deleteComment(@PathVariable(value = "id") long id, Model model) {
         Comment comment = commentService.getCommentById(id);
-        System.out.println(comment.getCid() + " " + comment.getCreatedAt() + " " +comment.getName() + " " + comment.getEmail() +  " " + comment.getCommentMsg());
         model.addAttribute("comment", commentService.getCommentById(id));
         model.addAttribute("postId", comment.getPostId().getPid());
-        System.out.println("postId id " + comment.getPostId().getPid());
         return "comment_update_form";
     }
 
