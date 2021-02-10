@@ -4,6 +4,7 @@ import com.raj.model.Comment;
 import com.raj.model.Post;
 import com.raj.model.Tag;
 import com.raj.repository.PostRepository;
+import com.raj.repository.PostSpecification;
 import com.raj.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -125,6 +127,17 @@ public class PostServiceImpl implements PostService{
         return postRepository.findAll(pageable);
     }
 
+    @Override
+    public Page<Post> findAllPostWithFilters(int pageNo, int pageSize, String sortField, String order,
+                                             String keyword, List<Long> tids, List<Long> uids,
+                                             Date starDate, Date endDate) {
+        return postRepository.findAll(PostSpecification.search(keyword)
+                        .and(PostSpecification.filterPostByTagIdList(tids))
+                        .and(PostSpecification.filterPostByAuthorIdList(uids))
+                        .and(PostSpecification.filterPostAfter(starDate))
+                        .and(PostSpecification.filterPostBefore(endDate)),
+                PostSpecification.getPageable(pageNo, pageSize, sortField, order));
+    }
 
     public Page<Post> findPaginated(int pageNo, int pageSize, String sortField, String order, String keyword) {
         // Sort in ascending or descending order Published DataTime

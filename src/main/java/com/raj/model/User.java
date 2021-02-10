@@ -45,11 +45,11 @@ public class User {
 
     }
 
-    public long getId() {
+    public long getUid() {
         return uid;
     }
 
-    public void setId(int id) {
+    public void setUid(int id) {
         this.uid = id;
     }
 

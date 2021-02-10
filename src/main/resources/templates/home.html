@@ -12,18 +12,58 @@
 
     <div class="container my-2">
         <h1>Post List</h1>
+        <form action="/home/1" class="container" >
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="order" th:value="${order}">
+
+            <label name="tagId">Select Tag</label>
+            <input type="search" name="keyword" placeholder="Search" th:value=${keyword}>
+            <div>
+                <label name="tagId">Select Tag</label>
+                <select name="tagId" multiple >
+                    <option th:each="tag : ${all_tags}"
+                            th:value="${tag.tid}"
+                            th:utext="${tag.name}"/>
+                    <option value='' selected></option>
+                </select>
+            </div>
+            <div>
+                <label name="tagId">Select Author</label>
+                <select name="authorId" multiple >
+                    <option th:each="author : ${all_authors}"
+                            th:value="${author.uid}"
+                            th:utext="${author.name}"/>
+                    <option value='' selected></option>
+                </select>
+            </div>
+            <label for="start">Start date:</label>
+            <input type="date" id="start" name="startDate"
+                   value="2021-02-01"
+                   min="2018-01-01" max="2021-12-31">
+
+            <label for="start">Start date:</label>
+            <input type="date" id="end" name="endDate"
+                   value="2021-02-28"
+                   min="2018-01-01" max="2021-12-31">
+
+            <input type="submit" value="Search" class="btn btn-primary btn-sm mb-2" >
+        </form>
         <a th:href="@{/showNewBlogForm}" class="btn btn-primary btn-sm mb-2"> Create Blog </a>
-        <div class="row col-sm-10" >
+        <div class="row col-sm-10">
             <div class="col-sm-1">
                 Order:
             </div>
             <div class="col-sm-2">
-                <span th:if="${sortDir == 'asc'}">Ascending   </span>
-                <a th:unless="${sortDir == 'asc'}" th:href="@{'/home/' + ${currentPage} + '?sortField=publishedAt&order=asc'}">Ascending</a>
+                <span th:if="${order == 'asc'}">Ascending</span>
+                <a th:unless="${order == 'asc'}" th:href="@{'/home/' + ${currentPage} + '?sortField=' + ${sortField} +
+                                                        '&order=asc&keyword=' + ${keyword} + '&startDate=' + ${startDate} +
+                                                         '&endDate=' + ${endDate} + ${tagIdString} + ${authorIdString} }">Ascending</a>
             </div>
             <div class="col-sm-1">
-                <a th:unless="${sortDir == 'dec'}" th:href="@{'/home/' + ${currentPage} + '?sortField=publishedAt&order=dec'}">Descending</a>
-                <span th:if="${sortDir == 'dec'}">Descending</span>
+                <a th:unless="${order == 'dec'}" th:href="@{'/home/' + ${currentPage} + '?sortField=' + ${sortField} +
+                                                            '&order=dec&keyword=' + ${keyword} + '&startDate=' + ${startDate} +
+                                                            '&endDate=' + ${endDate} + ${tagIdString} + ${authorIdString} }">Descending</a>
+                <span th:if="${order == 'dec'}">Descending</span>
             </div>
         </div>
         <table border="1" class="table table-striped table-responsive-md">
@@ -53,21 +93,29 @@
                     Total Rows: [[${totalItems}]]
                 </div>
                 <div class="col-sm-1">
-                    <a th:if="${currentPage > 1}" th:href="@{'/home/' + ${currentPage - 1} + '?sortField=publishedAt&order=' + ${sortDir}}">Prev</a>
+                    <a th:if="${currentPage > 1}" th:href="@{'/home/' + ${currentPage - 1} + '?sortField=' + ${sortField} +
+                                                            '&order=' + ${order} + '&keyword=' + ${keyword} + '&startDate='
+                                                            + ${startDate} + '&endDate=' + ${endDate} + ${tagIdString} + ${authorIdString} }">Prev</a>
                     <span th:unless="${currentPage > 1}">Prev</span>
                 </div>
                 <div class="col-sm-1">
                     <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-                        <a th:if="${currentPage != i}" th:href="@{'/home/' + ${i} + '?sortField=publishedAt&order=' + ${sortDir}}">[[${i}]]</a>
+                        <a th:if="${currentPage != i}" th:href="@{'/home/' + ${i} + '?sortField=' + ${sortField} +
+                                                            '&order=' + ${order} + '&keyword=' + ${keyword} + '&startDate='
+                                                            + ${startDate} + '&endDate=' + ${endDate} + ${tagIdString} + ${authorIdString} }">[[${i}]]</a>
                         <span th:unless="${currentPage != i}">[[${i}]]</span> &nbsp; &nbsp;
                     </span>
                 </div>
                 <div class="col-sm-1">
-                    <a th:if="${currentPage < totalPages}" th:href="@{'/home/' + ${currentPage + 1} + '?sortField=publishedAt&order=' + ${sortDir}}">Next</a>
+                    <a th:if="${currentPage < totalPages}" th:href="@{'/home/' + ${currentPage + 1} + '?sortField=' + ${sortField} +
+                                                                    '&order=' + ${order} + '&keyword=' + ${keyword} + '&startDate='
+                                                                    + ${startDate} + '&endDate=' + ${endDate} + ${tagIdString} + ${authorIdString} }">Next</a>
                     <span th:unless="${currentPage < totalPages}">Next</span>
                 </div>
                 <div class="col-sm-1">
-                    <a th:if="${currentPage < totalPages}" th:href="@{'/home/' + ${totalPages} + '?sortField=publishedAt&order=' + ${sortDir}}">Last</a>
+                    <a th:if="${currentPage < totalPages}" th:href="@{'/home/' + ${totalPages} + '?sortField=' + ${sortField} +
+                                                                    '&order=' + ${order} + '&keyword=' + ${keyword} + '&startDate='
+                                                                    + ${startDate} + '&endDate=' + ${endDate} + ${tagIdString} + ${authorIdString} }">Last</a>
                     <span th:unless="${currentPage < totalPages}">Last</span>
                 </div>
             </div>
