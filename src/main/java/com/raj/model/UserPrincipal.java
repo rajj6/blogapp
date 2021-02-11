@@ -9,10 +9,30 @@ import java.util.List;
 
 public class UserPrincipal implements UserDetails {
 
-    User user;
+    private User user;
+    private String name;
+    private long uid;
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
 
     public UserPrincipal(User user) {
         this.user = user;
+        this.name = user.getName();
+        this.uid = user.getUid();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

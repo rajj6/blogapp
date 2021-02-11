@@ -3,6 +3,7 @@ package com.raj.controller;
 import com.raj.model.Comment;
 import com.raj.model.Post;
 import com.raj.model.Tag;
+import com.raj.model.UserPrincipal;
 import com.raj.service.CommentService;
 import com.raj.service.PostService;
 import com.raj.service.TagService;
@@ -41,8 +42,10 @@ public class WebController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(principal != null){
             System.out.println(principal.getName());
-            System.out.println(principal.getClass()
-            );
+            System.out.println(principal.getClass());
+            UserPrincipal loggedInUser = getLoggedInUser();
+            System.out.println("Logged in user's Username "+loggedInUser.getUsername());
+            System.out.println("Logged in user's Name "+loggedInUser.getName());
         }else {
             System.out.println("Principal is null");
         }
@@ -52,6 +55,11 @@ public class WebController {
             System.out.println(i.getAuthority());
         }
         return "test";
+    }
+
+    private UserPrincipal getLoggedInUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (UserPrincipal)authentication.getPrincipal();
     }
 
     @GetMapping("/")
@@ -127,6 +135,7 @@ public class WebController {
     public String showNewPostForm(Model model) {
         Post post = new Post();
         model.addAttribute("post", post);
+        model.addAttribute("loggedInUser", getLoggedInUser());
         return "new_post";
     }
 
@@ -146,6 +155,8 @@ public class WebController {
 
     @PostMapping("/publishPost")
     public String publishPost(@ModelAttribute("post") Post post) {
+        System.out.println("Going to save this post "+post);
+        post.setAuthor(userService.getUserById(getLoggedInUser().getUid()));
         postService.addTagsToPost(post);
         postService.publishPost(post);
         return "redirect:/";

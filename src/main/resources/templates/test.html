@@ -52,8 +52,8 @@
     <div th:if="${#authentication.name == post.author.email || #authorization.expression('hasRole(''ROLE_ADMIN'')')}">
         Same Author is logged-in or it is an admin.
     </div>
-    <div th:text="#authentication.name"></div>
-    <th:block sec:au></th:block>
+<!--    <div th:text="#authentication.name"></div>-->
+<!--    <th:block sec:au></th:block>-->
 
 </body>
 </html>
