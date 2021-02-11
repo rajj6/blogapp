@@ -13,9 +13,16 @@
     <h2>Add Comment</h2>
 
     <form action="#" th:action="@{/saveComment/{id}(id=${postId})}" th:object="${comment}" method="post">
-
-        <input type="text" th:field="*{name}" placeholder="Name" class="form-control mb cp-4">
-        <input type="text" th:field="*{email}" placeholder="Email" class="form-control mb cp-4">
+        th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"
+        loggedInUser
+        <input th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"
+               type="hidden" th:field="*{name}" placeholder="Name" class="form-control mb cp-4">
+        <input th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"
+               type="hidden" th:field="*{email}" placeholder="Email" class="form-control mb cp-4">
+        <input th:if="${NOT #authorization.expression('hasRole(''ROLE_USER'')')}"
+               type="text" th:field="*{name}" placeholder="Name" class="form-control mb cp-4">
+        <input th:if="${NOT #authorization.expression('hasRole(''ROLE_USER'')')}"
+               type="text" th:field="*{email}" placeholder="Email" class="form-control mb cp-4">
         <textarea type="text" rows="3" th:field="*{commentMsg}" placeholder="Add comment here.." class="form-control mb cp-4"></textarea>
         <button type="submit" class="btn btn-info col-2"> Comment </button>
     </form>

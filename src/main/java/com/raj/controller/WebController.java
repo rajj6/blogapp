@@ -177,8 +177,13 @@ public class WebController {
     }
 
     @GetMapping("/addComment/{id}")
-    public String addComment(@PathVariable(value = "id") long id, Model model) {
+    public String addComment(@PathVariable(value = "id") long id, Model model, Principal principal) {
         Comment comment = new Comment();
+        if (principal != null) {
+            model.addAttribute("loggedInUser", getLoggedInUser());
+            comment.setName(getLoggedInUser().getName());
+            comment.setEmail(getLoggedInUser().getUsername());
+        }
         model.addAttribute("comment", comment);
         model.addAttribute("postId", id);
         return "comment_form";

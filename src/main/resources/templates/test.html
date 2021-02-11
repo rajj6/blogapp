@@ -34,8 +34,8 @@
 
 <!--    <p th:if="${#authorization.expression(hasRole('ROLE_USER'))}">KK</p>-->
 
-    <div th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
-        User hai ye
+    <div th:if="${NOT #authorization.expression('hasRole(''ROLE_USER'')')}">
+        User hai Nhi hai ye
     </div>
 
     <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
