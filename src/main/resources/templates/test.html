@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet"
@@ -11,5 +12,48 @@
 <body>
     "Testing"
     <a href="/test">Test Again</a>
+    <div sec:authorize="isAuthenticated()">
+        Authenticated as <span sec:authentication="name"></span>
+    </div>
+    <div sec:authorize="hasRole('ROLE_USER')">
+        Authenticated as USER <span sec:authentication="name"></span>
+    </div>
+
+    <p th:text="${post}"></p>
+    <p th:text="${post.author.name}"></p>
+    <p th:text="${post.author.email}"></p>
+    <p th:text="${#authentication.name}"></p>
+    <div th:if="${post.author.email == #authentication.name}">
+        Here it is
+    </div>
+
+    Authenticated username:
+    <div sec:authentication="name"></div>
+    Authenticated user roles:
+<!--    <div sec:authentication="principal.authorities"></div>-->
+
+<!--    <p th:if="${#authorization.expression(hasRole('ROLE_USER'))}">KK</p>-->
+
+    <div th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}">
+        User hai ye
+    </div>
+
+    <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+        ADMIN hai ye
+    </div>
+    <p th:text="${post.author.email}"></p>
+
+    <div th:if="${#authentication.name} == ${post.author.email}" >
+        Same Author is logged-in.
+    </div>
+    <div th:if="${#authentication.name} != ${post.author.email}" >
+        other Author is logged-in.
+    </div>
+    <div th:if="${#authentication.name == post.author.email || #authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+        Same Author is logged-in or it is an admin.
+    </div>
+    <div th:text="#authentication.name"></div>
+    <th:block sec:au></th:block>
+
 </body>
 </html>
