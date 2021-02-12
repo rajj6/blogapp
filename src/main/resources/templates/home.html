@@ -122,6 +122,12 @@
                 </div>
             </div>
         </div>
+        <a th:if="${NOT #authorization.expression('hasRole(''ROLE_USER'')')}"
+           th:href="@{/login}"  class="btn btn-primary"> Login </a>
+        <a th:if="${NOT #authorization.expression('hasRole(''ROLE_USER'')')}"
+           th:href="@{/register}" class="btn btn-primary"> Register </a>
+        <a th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"
+           th:href="@{/logout}" class="btn btn-primary"> Logout </a>
     </div>
 
 </body>

@@ -1,9 +1,6 @@
 package com.raj.controller;
 
-import com.raj.model.Comment;
-import com.raj.model.Post;
-import com.raj.model.Tag;
-import com.raj.model.UserPrincipal;
+import com.raj.model.*;
 import com.raj.service.CommentService;
 import com.raj.service.PostService;
 import com.raj.service.TagService;
@@ -35,6 +32,18 @@ public class WebController {
 
     @Autowired
     CommentService commentService;
+
+    @GetMapping("/register")
+    public String register(Model model) {
+        model.addAttribute("user", new User());
+        return "new_user";
+    }
+
+    @PostMapping("/saveUser")
+    public String saveUser(@ModelAttribute("user") User user) {
+        userService.saveUser(user);
+        return "redirect:/login";
+    }
 
     @GetMapping("/test")
     public String test(Principal principal,Model model) {

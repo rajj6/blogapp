@@ -13,8 +13,6 @@
     <h2>Add Comment</h2>
 
     <form action="#" th:action="@{/saveComment/{id}(id=${postId})}" th:object="${comment}" method="post">
-        th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"
-        loggedInUser
         <input th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"
                type="hidden" th:field="*{name}" placeholder="Name" class="form-control mb cp-4">
         <input th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"
